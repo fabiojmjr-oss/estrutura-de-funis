@@ -125,3 +125,23 @@ def test_relative_links_resolve() -> None:
             if not (path.parent / target).resolve().exists():
                 broken.append(f"{path.relative_to(ROOT)} -> {target}")
     assert not broken, "broken relative links: " + "; ".join(broken)
+
+
+def test_the_readmes_quote_the_number_of_javascript_tests() -> None:
+    """The web suites are not collected by pytest, so their counts are checked from the source."""
+
+    def count(directory: str, suffix: str) -> int:
+        files = (ROOT / "web" / directory).glob(f"*{suffix}")
+        return sum(len(re.findall(r"^test\(", f.read_text(encoding="utf-8"), re.M)) for f in files)
+
+    unit = count("tests", ".test.mjs")
+    browser = count("e2e", ".e2e.mjs")
+    english = (ROOT / "README.md").read_text(encoding="utf-8")
+    portuguese = (ROOT / "README.pt-BR.md").read_text(encoding="utf-8")
+    assert f"**{unit} JavaScript tests**" in english
+    assert f"**{browser} browser tests**" in english
+    assert (
+        f"**{unit} testes\nJavaScript**" in portuguese
+        or f"**{unit} testes JavaScript**" in portuguese
+    )
+    assert f"**{browser} testes de navegador**" in portuguese

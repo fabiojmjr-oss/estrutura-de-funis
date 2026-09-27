@@ -1,0 +1,19 @@
+{
+  "name": "Estrutura de Funis",
+  "short_name": "Funis",
+  "description": "Funis de marketing, vendas, supply chain, gestão e o ciclo ideia→MVP.",
+  "lang": "pt-BR",
+  "start_url": "./#overview",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f7fa",
+  "theme_color": "#1f4e79",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Ideia → MVP", "url": "./#ideation" },
+    { "name": "Multicanal", "url": "./#multichannel" },
+    { "name": "Construtor", "url": "./#builder" }
+  ]
+}

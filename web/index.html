@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Estrutura de Funis</title>
+  <meta name="description" content="Funis de marketing, vendas, supply chain, gestão e o ciclo ideia→MVP: interativo, offline e compartilhável.">
+  <meta name="theme-color" content="#1f4e79" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f1720" media="(prefers-color-scheme: dark)">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon.svg">
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Pular para o conteúdo</a>
+
+  <header class="topbar">
+    <div class="brand">
+      <img src="icons/icon.svg" alt="" width="28" height="28">
+      <div>
+        <h1>Estrutura de Funis</h1>
+        <p class="subtitle">Marketing · Vendas · Supply · Gestão · Ideia → MVP</p>
+      </div>
+    </div>
+    <div class="actions">
+      <span class="net-status" id="net-status" role="status" aria-live="polite"></span>
+      <button class="btn ghost" id="install-btn" hidden>Instalar app</button>
+      <button class="btn ghost" id="theme-btn" aria-label="Alternar tema claro/escuro">◐</button>
+      <button class="btn" id="share-btn" aria-haspopup="dialog">Compartilhar</button>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Funis">
+    <button role="tab" id="tab-overview" aria-controls="view" data-tab="overview">Visão geral</button>
+    <button role="tab" id="tab-builder" aria-controls="view" data-tab="builder">Construtor</button>
+    <button role="tab" id="tab-multichannel" aria-controls="view" data-tab="multichannel">Multicanal</button>
+    <button role="tab" id="tab-sales" aria-controls="view" data-tab="sales">Vendas</button>
+    <button role="tab" id="tab-supply" aria-controls="view" data-tab="supply">Supply</button>
+    <button role="tab" id="tab-management" aria-controls="view" data-tab="management">Gestão</button>
+    <button role="tab" id="tab-ideation" aria-controls="view" data-tab="ideation">Ideia → MVP</button>
+  </nav>
+
+  <main id="main" tabindex="-1">
+    <section id="view" role="tabpanel" aria-live="polite">
+      <p class="loading">Carregando dados…</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>
+      Dados sintéticos gerados por <code>funilab.synth</code> (semente fixa) — nenhum dado real.
+      Cada número deste painel é recalculado no navegador e testado contra a biblioteca Python.
+    </p>
+    <p class="footer-actions">
+      <button class="btn ghost small" id="csv-btn">Baixar CSV</button>
+      <button class="btn ghost small" id="print-btn">Imprimir / PDF</button>
+    </p>
+  </footer>
+
+  <dialog id="share-dialog" aria-labelledby="share-title">
+    <form method="dialog" class="dialog-body">
+      <h2 id="share-title">Compartilhar este cenário</h2>
+      <p class="muted">O link abre exatamente esta aba com os parâmetros atuais.</p>
+      <label class="field">
+        <span>Link</span>
+        <input id="share-url" type="url" readonly>
+      </label>
+      <div class="share-grid">
+        <button type="button" class="btn" id="copy-link">Copiar link</button>
+        <a class="btn ghost" id="share-whatsapp" target="_blank" rel="noopener">WhatsApp</a>
+        <a class="btn ghost" id="share-email">E-mail</a>
+        <a class="btn ghost" id="share-linkedin" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+      <div class="dialog-actions">
+        <button class="btn ghost" value="close">Fechar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <noscript>
+    <p class="noscript">Este painel precisa de JavaScript. Os mesmos números estão no README do repositório.</p>
+  </noscript>
+</body>
+</html>

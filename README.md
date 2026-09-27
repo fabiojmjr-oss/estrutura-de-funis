@@ -6,7 +6,8 @@
 
 Five funnels — marketing, sales, supply chain, strategy execution and, at the centre, the full
 cycle from a captured idea to a scaled solution — on one funnel engine, with the synthetic data
-to exercise all of it. Python, tested, typed. Sister repository of
+to exercise all of it. A Python library, tested and typed, and an interactive web interface in
+HTML, CSS and JavaScript that works on desktop and phone, offline, and from a shared link. Sister repository of
 [`ferramentas-de-trabalho`](https://github.com/fabiojmjr-oss/ferramentas-de-trabalho), built to
 the same rules.
 
@@ -267,6 +268,47 @@ figures. Every one of them is executed by the test suite.
 | [`06_idea_scoring.py`](examples/06_idea_scoring.py) | Whether the triage score predicts anything, and how much evidence a gate needs |
 | [`07_idea_to_mvp.py`](examples/07_idea_to_mvp.py) | The full cycle from captured idea to scaled solution, under five gate policies |
 
+## The web interface
+
+`web/` is a static page — HTML, CSS and plain JavaScript modules, no framework and no build step —
+that puts every funnel under the user's hands: move a slider, pick an attribution model, change a
+gate policy, and the numbers are recomputed in the browser.
+
+```bash
+make web-data   # export the figures and portfolios from the Python library
+make web        # serve on http://127.0.0.1:8000/
+```
+
+| Tab | What you can do |
+| --- | --- |
+| Visão geral | The five funnels and the finding each one hides |
+| Construtor | Type or load any funnel: step rates with 95% intervals, levers, reverse funnel |
+| Multicanal | Switch attribution model and scale each channel's spend: CAC and rank per channel |
+| Vendas | Swap stage odds (CRM, history, your own), toggle stale deals, grade the forecast |
+| Supply | Set first-pass yield per stage: RTY against final yield, rework per 100 orders |
+| Gestão | The benefit bridge as a waterfall; Little's law with your WIP and throughput |
+| Ideia → MVP | Build a gate policy and simulate it on the 628-idea portfolio; a gate calculator with the posterior curve and the sample a decision needs |
+
+**One scenario, every channel.** The same page is built to travel:
+
+| Channel | How |
+| --- | --- |
+| Desktop, tablet, phone | Responsive to 360 px with no sideways scroll; charts switch to a stacked layout on narrow screens |
+| Shared link | Every control writes to the URL, so a link reopens the exact scenario — native share sheet on phones, WhatsApp, e-mail, LinkedIn and copy on desktop |
+| Installed app, offline | A web app manifest and a service worker: installable, and usable offline after the first visit |
+| Paper | Print or save as PDF, with the scenario's parameters and link printed above the results |
+| Spreadsheet | CSV of the current tab (semicolon-separated with a BOM, so Excel in Portuguese opens it directly) |
+| Accessibility | Keyboard-navigable tabs, visible focus, light and dark themes, reduced motion |
+
+**Two engines, one answer.** The JavaScript engine re-implements the arithmetic so the page needs
+no server — which is exactly how two implementations drift. `python -m funilab.export` therefore
+also writes test vectors (`web/data/parity.json`), and the JavaScript suite asserts the Beta
+distribution, the neutral prior, gate decisions, sample sizes, Wilson intervals and attribution
+against Python's answers. The gate simulator uses a different random stream, so it is held to the
+distribution instead: the no-gates policy must match Python exactly, and every gated policy's
+mean must land inside the range Python reports. A Python test fails if the committed data is
+stale.
+
 ## The idea-to-MVP cycle
 
 The playbook in [`docs/ciclo-ideia-mvp.md`](docs/ciclo-ideia-mvp.md) (in Portuguese) runs the
@@ -331,14 +373,19 @@ the examples are executed there too.
 ## Development
 
 ```bash
-make install    # editable install with the dev tools
-make check      # lint, format, types and the fast suite - what gates a push
-make check-all  # the above plus every documented figure re-derived
-make claims     # re-derive every number quoted in a README
+make install     # editable install with the dev tools
+make check       # lint, format, types and the fast suite - what gates a push
+make check-all   # the above plus every documented figure re-derived
+make claims      # re-derive every number quoted in a README
+make js-install  # the web tooling (ESLint, Playwright)
+make js-check    # JavaScript lint, engine and parity tests
+make e2e         # the page in Chromium: desktop, phone, shared link, dark, print, offline
 ```
 
-**109 tests, split by cost.** 88 of them run in a few seconds and gate every push; the rest
-re-derive every figure quoted above, replicate the gate policies and execute every example.
+**114 tests, split by cost.** 92 of them run in a few seconds and gate every push; the rest
+re-derive every figure quoted above, replicate the gate policies, execute every example and check
+that the web data is current. The web interface adds **18 JavaScript tests** (engine and parity)
+and **6 browser tests**, in their own CI job.
 Statement coverage is reported by `make check` and is the one repository figure not under test.
 
 ## License

@@ -63,3 +63,30 @@ jobs:
 
       - name: Verify every documented figure
         run: pytest -m slow -v
+
+  # The web interface: lint, the engine's unit and parity tests against the Python-exported
+  # vectors, then the page itself in Chromium on desktop and phone viewports. No interpreter
+  # matrix: the page ships as static files and the tests pin one Node and one browser.
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Lint
+        run: npx eslint web eslint.config.js
+
+      - name: Engine and parity tests
+        run: npm test
+
+      - name: Browser tests
+        run: npm run e2e

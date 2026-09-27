@@ -16,3 +16,7 @@ htmlcov/
 data/generated/
 *.parquet
 .DS_Store
+
+# JavaScript
+node_modules/
+test-results/

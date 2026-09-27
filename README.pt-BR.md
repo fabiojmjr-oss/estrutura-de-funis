@@ -6,7 +6,9 @@
 
 Cinco funis — marketing, vendas, supply chain, execução estratégica e, no centro, o ciclo completo
 de uma ideia captada até uma solução escalada — sobre um único motor de funil, com os dados
-sintéticos para exercitar tudo isso. Python, com testes e tipagem. Repositório irmão do
+sintéticos para exercitar tudo isso. Uma biblioteca Python, com testes e tipagem, e uma interface
+web interativa em HTML, CSS e JavaScript que funciona no computador e no celular, offline e a
+partir de um link compartilhado. Repositório irmão do
 [`ferramentas-de-trabalho`](https://github.com/fabiojmjr-oss/ferramentas-de-trabalho), construído
 com as mesmas regras.
 
@@ -267,6 +269,47 @@ Todos são executados pela suíte de testes.
 | [`06_idea_scoring.py`](examples/06_idea_scoring.py) | Se o score de triagem prevê algo, e quanta evidência um gate precisa |
 | [`07_idea_to_mvp.py`](examples/07_idea_to_mvp.py) | O ciclo completo da ideia captada à solução escalada, sob cinco políticas |
 
+## A interface web
+
+`web/` é uma página estática — HTML, CSS e módulos JavaScript puros, sem framework e sem etapa de
+build — que coloca cada funil na mão do usuário: mova um controle, escolha um modelo de atribuição,
+mude uma política de gates, e os números são recalculados no navegador.
+
+```bash
+make web-data   # exporta números e portfólios da biblioteca Python
+make web        # serve em http://127.0.0.1:8000/
+```
+
+| Aba | O que dá para fazer |
+| --- | --- |
+| Visão geral | Os cinco funis e o achado que cada um esconde |
+| Construtor | Digite ou carregue qualquer funil: taxas com intervalo de 95%, alavancas, funil reverso |
+| Multicanal | Troque o modelo de atribuição e a verba de cada canal: CAC e posição por canal |
+| Vendas | Troque as probabilidades (CRM, histórico, suas), filtre negócios parados, avalie a previsão |
+| Supply | Defina o rendimento de primeira passagem por etapa: RTY contra rendimento final, retrabalho |
+| Gestão | A ponte de benefício em cascata; Lei de Little com o seu WIP e a sua vazão |
+| Ideia → MVP | Monte uma política de gates e simule no portfólio de 628 ideias; calculadora de gate com a curva a posteriori e a amostra que a decisão precisa |
+
+**Um cenário, todos os canais.** A mesma página foi feita para circular:
+
+| Canal | Como |
+| --- | --- |
+| Computador, tablet, celular | Responsiva até 360 px sem rolagem lateral; gráficos empilham em telas estreitas |
+| Link compartilhado | Todo controle grava na URL, então o link reabre o cenário exato — compartilhamento nativo no celular, WhatsApp, e-mail, LinkedIn e copiar no computador |
+| App instalado, offline | Manifesto de web app e service worker: instalável e utilizável offline depois da primeira visita |
+| Papel | Imprimir ou salvar em PDF, com os parâmetros e o link do cenário acima dos resultados |
+| Planilha | CSV da aba atual (separado por ponto e vírgula, com BOM, para o Excel em português abrir direto) |
+| Acessibilidade | Abas navegáveis por teclado, foco visível, temas claro e escuro, movimento reduzido |
+
+**Dois motores, uma resposta.** O motor JavaScript reimplementa a aritmética para a página não
+precisar de servidor — que é exatamente como duas implementações se desencontram. Por isso
+`python -m funilab.export` também grava vetores de teste (`web/data/parity.json`), e a suíte
+JavaScript verifica a distribuição Beta, o prior neutro, as decisões de gate, os tamanhos de
+amostra, os intervalos de Wilson e a atribuição contra as respostas do Python. O simulador de gates
+usa outro gerador aleatório, então é cobrado pela distribuição: a política sem gates precisa bater
+exatamente com o Python, e a média de cada política com gate precisa cair dentro da faixa que o
+Python reporta. Um teste Python falha se os dados commitados estiverem desatualizados.
+
 ## O ciclo ideia → MVP
 
 O playbook em [`docs/ciclo-ideia-mvp.md`](docs/ciclo-ideia-mvp.md) percorre as sete etapas de ponta
@@ -333,15 +376,19 @@ exemplos também são executados lá.
 ## Desenvolvimento
 
 ```bash
-make install    # instalação editável com as ferramentas de desenvolvimento
-make check      # lint, formatação, tipos e a suíte rápida - o que libera um push
-make check-all  # o acima mais todo número documentado re-derivado
-make claims     # re-deriva todo número citado num README
+make install     # instalação editável com as ferramentas de desenvolvimento
+make check       # lint, formatação, tipos e a suíte rápida - o que libera um push
+make check-all   # o acima mais todo número documentado re-derivado
+make claims      # re-deriva todo número citado num README
+make js-install  # ferramentas da web (ESLint, Playwright)
+make js-check    # lint JavaScript, testes do motor e de paridade
+make e2e         # a página no Chromium: desktop, celular, link, tema escuro, impressão, offline
 ```
 
-**109 testes, divididos por custo.** 88 deles rodam em poucos segundos e liberam cada push; o
-restante re-deriva todo número citado acima, replica as políticas de gate e executa todos os
-exemplos. A cobertura de linhas é reportada pelo `make check` e é o único número sobre o
+**114 testes, divididos por custo.** 92 deles rodam em poucos segundos e liberam cada push; o
+restante re-deriva todo número citado acima, replica as políticas de gate, executa todos os
+exemplos e confere se os dados da web estão atualizados. A interface web soma **18 testes
+JavaScript** (motor e paridade) e **6 testes de navegador**, num job de CI próprio. A cobertura de linhas é reportada pelo `make check` e é o único número sobre o
 repositório que não está sob teste.
 
 ## Licença

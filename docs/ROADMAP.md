@@ -33,7 +33,19 @@ And the "Evidence" gate policy — larger samples and an 80% posterior — did n
 intuition until the score cut was removed and the confidence bar was set from the cost of each
 error; the calibrated policy was then selected on one portfolio and reported on another.
 
-## Wave 2 — candidates
+## Wave 2 — the web interface *(complete)*
+
+`web/`: HTML, CSS and plain JavaScript modules over data exported by `funilab.export`. Chosen
+over a framework so the page has no build step, works offline and can be served from any static
+host. The selection rule applied to channels as well as metrics: each channel (phone, shared link,
+installed app, paper, spreadsheet) exists because a funnel decision is discussed there.
+
+The risk of two engines is drift, so parity is tested rather than assumed: Python writes test
+vectors, JavaScript asserts them, and the gate simulator is held to Python's ranges. The browser
+suite found one real layout defect before release — funnel labels cut on phones — and the charts
+now switch to a stacked layout below 480 px.
+
+## Wave 3 — candidates
 
 | Candidate | Question | Why it would change a decision |
 | --- | --- | --- |

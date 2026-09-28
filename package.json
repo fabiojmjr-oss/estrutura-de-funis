@@ -1,0 +1,23 @@
+{
+  "name": "funilab-web",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Interactive, offline-capable web interface for funilab: funnels, multi-channel attribution and the idea-to-MVP cycle.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test \"web/tests/*.test.mjs\"",
+    "lint": "eslint web",
+    "e2e": "node --test \"web/e2e/*.e2e.mjs\"",
+    "serve": "node web/serve.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.5",
+    "eslint": "9.39.5",
+    "globals": "17.12.0",
+    "playwright": "1.56.1"
+  }
+}

@@ -3,6 +3,7 @@
 [![ci](https://github.com/fabiojmjr-oss/estrutura-de-funis/actions/workflows/ci.yml/badge.svg)](https://github.com/fabiojmjr-oss/estrutura-de-funis/actions/workflows/ci.yml)
 ![python](https://img.shields.io/badge/python-3.10%2B-blue)
 ![license](https://img.shields.io/badge/license-MIT-green)
+[![pages](https://github.com/fabiojmjr-oss/estrutura-de-funis/actions/workflows/pages.yml/badge.svg)](https://github.com/fabiojmjr-oss/estrutura-de-funis/actions/workflows/pages.yml)
 
 Five funnels — marketing, sales, supply chain, strategy execution and, at the centre, the full
 cycle from a captured idea to a scaled solution — on one funnel engine, with the synthetic data
@@ -11,7 +12,7 @@ HTML, CSS and JavaScript that works on desktop and phone, offline, and from a sh
 [`ferramentas-de-trabalho`](https://github.com/fabiojmjr-oss/ferramentas-de-trabalho), built to
 the same rules.
 
-**[Leia em português →](README.pt-BR.md)**
+**[Open the interactive page →](https://fabiojmjr-oss.github.io/estrutura-de-funis/)** · **[Leia em português →](README.pt-BR.md)**
 
 ---
 

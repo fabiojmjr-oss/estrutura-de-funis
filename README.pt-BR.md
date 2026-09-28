@@ -3,6 +3,7 @@
 [![ci](https://github.com/fabiojmjr-oss/estrutura-de-funis/actions/workflows/ci.yml/badge.svg)](https://github.com/fabiojmjr-oss/estrutura-de-funis/actions/workflows/ci.yml)
 ![python](https://img.shields.io/badge/python-3.10%2B-blue)
 ![license](https://img.shields.io/badge/license-MIT-green)
+[![pages](https://github.com/fabiojmjr-oss/estrutura-de-funis/actions/workflows/pages.yml/badge.svg)](https://github.com/fabiojmjr-oss/estrutura-de-funis/actions/workflows/pages.yml)
 
 Cinco funis — marketing, vendas, supply chain, execução estratégica e, no centro, o ciclo completo
 de uma ideia captada até uma solução escalada — sobre um único motor de funil, com os dados
@@ -12,7 +13,7 @@ partir de um link compartilhado. Repositório irmão do
 [`ferramentas-de-trabalho`](https://github.com/fabiojmjr-oss/ferramentas-de-trabalho), construído
 com as mesmas regras.
 
-**[Read in English →](README.md)**
+**[Abrir a página interativa →](https://fabiojmjr-oss.github.io/estrutura-de-funis/)** · **[Read in English →](README.md)**
 
 ---
 

@@ -53,7 +53,8 @@ def generate_supply(
 
     now = order_ts.to_numpy().copy()
     alive = np.ones(n, dtype=bool)
-    stage_ts = {FULFILMENT.top: now.copy()}
+    # Annotated as a plain ndarray: older NumPy stubs track shape and reject the reassignments.
+    stage_ts: dict[str, np.ndarray] = {FULFILMENT.top: now.copy()}
     attempt_rows = []
     total_rework = np.zeros(n, dtype=int)
 

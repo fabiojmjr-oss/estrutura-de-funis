@@ -41,9 +41,10 @@ def generate_management(config: SynthConfig | None = None) -> ManagementData:
     # arrival rate, standing in for the queueing a shared delivery team produces.
     load = 1 + 0.6 * np.linspace(0, 1, n)
 
-    now = proposed.to_numpy().copy()
-    alive = np.ones(n, dtype=bool)
-    stage_ts = {EXECUTION.top: now.copy()}
+    # Annotated as plain ndarrays: older NumPy stubs track shape and reject the reassignments.
+    now: np.ndarray = proposed.to_numpy().copy()
+    alive: np.ndarray = np.ones(n, dtype=bool)
+    stage_ts: dict[str, np.ndarray] = {EXECUTION.top: now.copy()}
     stopped_ts = np.full(n, np.datetime64("NaT"), dtype="datetime64[ns]")
     stopped_at = np.full(n, "", dtype=object)
     for stage, rate, median in zip(EXECUTION.stages[1:], PASS_RATE, MEDIAN_DAYS, strict=True):

@@ -244,7 +244,7 @@ def simulate_policy(
     step_days = rng.gamma(4.0, np.array(days.as_tuple()) / 4.0, size=(n, len(stages) - 1))
     elapsed = np.cumsum(step_days, axis=1)
     captured = ideas["captured_ts"].to_numpy()
-    ts = np.full((n, len(stages)), np.datetime64("NaT"), dtype="datetime64[ns]")
+    ts: np.ndarray = np.full((n, len(stages)), np.datetime64("NaT"), dtype="datetime64[ns]")
     ts[:, 0] = captured
     ts[:, 1:] = captured[:, None] + (elapsed * 86_400e9).astype("timedelta64[ns]")
     ts = np.where(reached, ts, np.datetime64("NaT"))

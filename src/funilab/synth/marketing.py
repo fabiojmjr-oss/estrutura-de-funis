@@ -67,8 +67,8 @@ def generate_marketing(
     for profile in channels:
         created = arrival_times(rng, config, profile.leads_per_day, offset_days=config.history_days)
         frame = pd.DataFrame({"created_ts": created, "channel": profile.name})
-        ts = frame["created_ts"].to_numpy()
-        alive = np.ones(len(frame), dtype=bool)
+        ts: np.ndarray = frame["created_ts"].to_numpy()
+        alive: np.ndarray = np.ones(len(frame), dtype=bool)
         for step, (rate, delay) in enumerate(
             zip(profile.step_rates, STAGE_DELAY_DAYS, strict=True), start=1
         ):

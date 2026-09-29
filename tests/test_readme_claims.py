@@ -20,7 +20,9 @@ import pytest
 
 from funilab.core import conversion_sensitivity, funnel_table, lever_table
 from funilab.ideation import (
+    BASELINE_POLICIES,
     compare_policies,
+    paired_difference,
     prob_above,
     score_validity,
 )
@@ -284,6 +286,20 @@ def test_finding_10_policy_table(policies: pd.DataFrame) -> None:
     assert net.round(1).loc["Calibrada"].tolist() == [26.9, 35.8]
     # The calibrated policy's worst run is above intuition's best.
     assert net.loc["Calibrada", "low"] > net.loc["Intuição", "high"]
+
+
+def test_finding_10_paired_differences() -> None:
+    """README: calibrated beats evidence in every paired run; evidence vs intuition does not separate."""
+    ideas = generate_ideas(SynthConfig(seed=2026)).ideas
+    policy = {p.name: p for p in BASELINE_POLICIES}
+    calibrated = paired_difference(ideas, policy["Calibrada"], policy["Evidência"])
+    assert round(calibrated["mean"] / 1e6, 1) == 5.1
+    assert round(calibrated["low"] / 1e6, 2) == 0.55
+    assert round(calibrated["high"] / 1e6, 2) == 9.92
+    assert calibrated["share_positive"] == 1.0
+    evidence = paired_difference(ideas, policy["Evidência"], policy["Intuição"])
+    assert evidence["low"] < 0 < evidence["high"]
+    assert evidence["share_positive"] == pytest.approx(0.85)
 
 
 def test_finding_10_uniform_prior_defect() -> None:

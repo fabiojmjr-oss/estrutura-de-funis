@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "Se usar este trabalho, cite-o como abaixo. / If you use this work, please cite it as below."
+title: "funilab — estrutura de funis: marketing, vendas, supply chain, gestão e o ciclo ideia → MVP"
+type: software
+authors:
+  - name: "fabiojmjr-oss"
+repository-code: "https://github.com/fabiojmjr-oss/estrutura-de-funis"
+url: "https://fabiojmjr-oss.github.io/estrutura-de-funis/"
+license: MIT
+version: "0.1.0"
+date-released: "2026-09-29"
+keywords:
+  - funnel analysis
+  - conversion
+  - lean six sigma
+  - supply chain
+  - product discovery
+  - MVP
+  - bayesian decision

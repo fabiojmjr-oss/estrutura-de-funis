@@ -4,6 +4,14 @@
  * No dependencies: the regularised incomplete beta function is computed by continued fraction
  * (modified Lentz), the log-gamma by Lanczos. Every function here is asserted against Python's
  * answers in web/tests/parity.test.mjs, so the page and the library cannot quietly disagree.
+ *
+ * Methods, each implemented independently from its published description:
+ *   - incomplete beta: continued fraction with the modified Lentz algorithm (Lentz 1976;
+ *     Thompson & Barnett 1986), as described in Press et al., Numerical Recipes, 3rd ed., 6.4;
+ *   - log-gamma: Lanczos approximation (Lanczos 1964, SIAM J. Numer. Anal. B 1), g = 7, n = 9,
+ *     with the widely published coefficient set;
+ *   - inverse normal CDF: Acklam's rational approximation (P. J. Acklam, 2003);
+ *   - Wilson score interval: Wilson, E. B. (1927), JASA 22(158).
  */
 
 const FPMIN = 1e-300;

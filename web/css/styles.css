@@ -793,6 +793,19 @@ dialog::backdrop {
   }
 }
 
+.field.toggle {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+}
+
+.note {
+  font-size: 0.8rem;
+}
+
+.grid.spaced {
+  margin-top: 1rem;
+}
+
 .print-params {
   display: none;
   font-size: 0.85rem;

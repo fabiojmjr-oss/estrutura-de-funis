@@ -20,9 +20,12 @@ export function render(el, { data, params, setParams, setCsv }) {
   const stages = supply.yields.filter((r) => r.stage !== 'total');
   const measured = supply.yields.find((r) => r.stage === 'total');
   const state = {
-    fpy: stages.map((r, i) => param(params, `f${i}`, Math.round(r.first_pass_yield * 1000) / 10)),
-    retry: param(params, 'retry', 85),
-    attempts: param(params, 'tentativas', 3),
+    fpy: stages.map((r, i) => param(params, `f${i}`, Math.round(r.first_pass_yield * 1000) / 10, {
+      min: 80,
+      max: 100,
+    })),
+    retry: param(params, 'retry', 85, { min: 50, max: 100 }),
+    attempts: param(params, 'tentativas', 3, { min: 1, max: 5 }),
   };
 
   el.innerHTML = `

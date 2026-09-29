@@ -1,6 +1,9 @@
-// Offline channel: cache the shell and the data on first visit, serve from cache when offline.
-// Network first for data, so a redeploy with new figures is picked up whenever there is a
-// connection; cache first for the static shell.
+// Offline channel: cache the page and its data, serve from cache only when the network fails.
+//
+// Network first for everything. An earlier version served the shell cache-first under a fixed
+// cache name, which meant a returning visitor kept the old JavaScript after every redeploy while
+// the data (network-first) moved on: two versions of the app mixed in one tab. The deploy
+// workflow now also stamps VERSION with the commit, so each release gets a fresh cache.
 
 const VERSION = 'funis-v1';
 const SHELL = [
@@ -48,18 +51,15 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   if (request.method !== 'GET' || new URL(request.url).origin !== self.location.origin) return;
-  const isData = request.url.includes('/data/');
-  if (isData) {
-    event.respondWith(
-      fetch(request)
-        .then((response) => {
+  event.respondWith(
+    fetch(request)
+      .then((response) => {
+        if (response.ok) {
           const copy = response.clone();
           caches.open(VERSION).then((cache) => cache.put(request, copy));
-          return response;
-        })
-        .catch(() => caches.match(request)),
-    );
-    return;
-  }
-  event.respondWith(caches.match(request, { ignoreSearch: true }).then((hit) => hit ?? fetch(request)));
+        }
+        return response;
+      })
+      .catch(() => caches.match(request, { ignoreSearch: true })),
+  );
 });

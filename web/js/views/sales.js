@@ -12,11 +12,14 @@ export function render(el, { data, params, setParams, setCsv }) {
   const { sales } = data;
   const open = sales.stages.slice(0, -1);
   const state = {
-    source: param(params, 'odds', 'hist'),
-    custom: open.map((s, i) => param(params, `p${i}`, Math.round(sales.historical_probability[s] * 100))),
+    source: param(params, 'odds', 'hist', { oneOf: ['crm', 'hist', 'custom'] }),
+    custom: open.map((s, i) => param(params, `p${i}`, Math.round(sales.historical_probability[s] * 100), {
+      min: 0,
+      max: 100,
+    })),
     stale: param(params, 'parados', true),
-    factor: param(params, 'fator', 1),
-    skip: param(params, 'etapas', 'infer'),
+    factor: param(params, 'fator', 1, { min: 0.5, max: 3 }),
+    skip: param(params, 'etapas', 'infer', { oneOf: ['infer', 'literal'] }),
   };
 
   el.innerHTML = `

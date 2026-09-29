@@ -24,7 +24,7 @@ export function segmented(key, label, value, options) {
 }
 
 export function toggle(key, label, value) {
-  return `<label class="field" style="grid-template-columns:auto 1fr;align-items:center"><input type="checkbox" data-param="${key}"${value ? ' checked' : ''}><span>${esc(label)}</span></label>`;
+  return `<label class="field toggle"><input type="checkbox" data-param="${key}"${value ? ' checked' : ''}><span>${esc(label)}</span></label>`;
 }
 
 /** Collect every [data-param] control under root into a flat string map. */

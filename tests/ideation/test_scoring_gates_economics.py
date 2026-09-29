@@ -9,6 +9,7 @@ from funilab.ideation import (
     break_even_payoff,
     compare_policies,
     ice,
+    paired_difference,
     precision_at,
     rice,
     score_validity,
@@ -98,3 +99,18 @@ def test_stage_value_by_hand() -> None:
 def test_stage_value_validates_lengths() -> None:
     with pytest.raises(ValueError):
         stage_value(["a"], [0.5, 0.5], [1.0], 10.0)
+
+
+def test_paired_difference_of_a_policy_with_itself_is_exactly_zero(ideas: pd.DataFrame) -> None:
+    policy = BASELINE_POLICIES[2]
+    result = paired_difference(ideas, policy, policy, replications=5)
+    assert result["mean"] == result["low"] == result["high"] == 0.0
+    assert result["share_positive"] == 0.0
+
+
+def test_paired_difference_is_antisymmetric(ideas: pd.DataFrame) -> None:
+    a, b = BASELINE_POLICIES[1], BASELINE_POLICIES[4]
+    ab = paired_difference(ideas, a, b, replications=5)
+    ba = paired_difference(ideas, b, a, replications=5)
+    assert ab["mean"] == pytest.approx(-ba["mean"])
+    assert ab["low"] == pytest.approx(-ba["high"])

@@ -119,3 +119,14 @@ test('the calibrated policy makes the most money in JavaScript too', () => {
   nets.sort((a, b) => b[1] - a[1]);
   assert.equal(nets[0][0], 'Calibrada');
 });
+
+test('URL parameters are validated: choices from a list, numbers clamped, junk ignored', async () => {
+  const { param } = await import('../js/ui/state.js');
+  assert.equal(param({ m: 'last' }, 'm', 'first', { oneOf: ['first', 'last'] }), 'last');
+  assert.equal(param({ m: '<img>' }, 'm', 'first', { oneOf: ['first', 'last'] }), 'first');
+  assert.equal(param({ x: '500' }, 'x', 10, { min: 0, max: 100 }), 100);
+  assert.equal(param({ x: '1e309' }, 'x', 10), 10);
+  assert.equal(param({ x: 'abc' }, 'x', 10), 10);
+  assert.equal(param({}, 'constructor', 7), 7);
+  assert.equal(param({ b: '1' }, 'b', false), true);
+});

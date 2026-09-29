@@ -23,8 +23,11 @@ export function render(el, { data, params, setParams, setCsv }) {
   const { management } = data;
   const flow = management.flow;
   const state = {
-    wip: param(params, 'wip', Math.round(flow.wip)),
-    throughput: param(params, 'vazao', Math.round(flow.throughput_per_day * 30.4 * 10) / 10),
+    wip: param(params, 'wip', Math.round(flow.wip), { min: 5, max: 120 }),
+    throughput: param(params, 'vazao', Math.round(flow.throughput_per_day * 30.4 * 10) / 10, {
+      min: 1,
+      max: 30,
+    }),
   };
 
   const bridge = management.bridge.map((b) => ({ label: LABELS[b.bar] ?? b.bar, value: b.benefit }));
@@ -36,13 +39,13 @@ export function render(el, { data, params, setParams, setCsv }) {
     cada real que some tem um gate responsável.</p>
     <div class="panel">
       ${waterfallChart(bridge, { label: 'Ponte de benefício', format: (v) => dec1(v / 1e6) })}
-      <p class="muted" style="font-size:.8rem">Valores em R$ milhões.</p>
+      <p class="muted note">Valores em R$ milhões.</p>
       ${table(['Barra', 'R$ mi', 'Fração do anunciado'], bridge.map((b) => [esc(b.label), dec1(b.value / 1e6), pct(b.value / announced)]))}
       <div class="insight"><p>${brlM(-management.bridge.find((b) => b.bar === 'stopped before Benefício medido').benefit)} foram
       entregues e nunca medidos — mais que os ${brlM(management.bridge.find((b) => b.bar === 'realised').benefit)} realizados e
       medidos. O portfólio não sabe dizer se o seu maior resultado aconteceu.</p></div>
     </div>
-    <div class="grid two" style="margin-top:1rem">
+    <div class="grid two spaced">
       <div class="panel controls" id="controls">
         <h3>Lei de Little</h3>
         ${range('wip', 'Iniciativas em execução (WIP)', state.wip, { min: 5, max: 120, step: 1, format: (v) => int(v) })}

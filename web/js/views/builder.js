@@ -31,9 +31,9 @@ const decode = (text) => text.split(';').map((part) => {
 
 export function render(el, { data, params, setParams, setCsv }) {
   const all = presets(data);
-  let preset = param(params, 'preset', 'marketing');
+  let preset = param(params, 'preset', 'marketing', { oneOf: ['marketing', 'sales', 'supply', 'management', 'custom'] });
   let stages = params.s ? decode(params.s) : all[preset] ?? all.marketing;
-  let target = param(params, 'alvo', 300);
+  let target = param(params, 'alvo', 300, { min: 1, max: 1e9 });
 
   el.innerHTML = `
     <h2>Construtor de funil</h2>

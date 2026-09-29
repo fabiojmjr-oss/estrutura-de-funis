@@ -243,6 +243,13 @@ its worst run (26.9) is above intuition's best (25.6) — because it spends on c
 every idea instead of on a score, and sets its confidence bar from the cost of each error rather
 than from how rigorous it sounds.
 
+The ranges above overlap between calibrated and evidence, and that overlap is mostly luck the two
+policies share: which ideas happened to impress their interviewees. `paired_difference` runs both
+on the same draws and measures the difference directly. **Calibrated beats evidence in 60 of 60
+paired runs, by BRL 5.1M on average (2.5–97.5% range +0.55M to +9.92M).** The same test does *not*
+separate evidence from intuition: the range crosses zero and evidence comes out ahead in 85% of
+runs, so the README makes no claim that the textbook upgrade beats gut feel on this portfolio.
+
 The calibrated policy was chosen by a grid search on the seed-42 portfolio. Every figure above is
 from an **independent portfolio (seed 2026)**, so the search is not grading itself.
 
@@ -336,6 +343,9 @@ what happened rather than against each other.
 **Never report a stochastic point estimate as an answer.** Gate policies are replicated and carry
 a range; a difference inside the range is not reported as a win.
 
+**Compare policies on the same draws.** Two overlapping ranges do not mean two policies are
+indistinguishable; the paired difference does the deciding.
+
 **Tune on one sample, report on another.** The calibrated policy was selected on one portfolio and
 every published figure comes from a second.
 
@@ -380,13 +390,13 @@ make check-all   # the above plus every documented figure re-derived
 make claims      # re-derive every number quoted in a README
 make js-install  # the web tooling (ESLint, Playwright)
 make js-check    # JavaScript lint, engine and parity tests
-make e2e         # the page in Chromium: desktop, phone, shared link, dark, print, offline
+make e2e         # the page in Chromium: desktop, phone, shared link, injection, preview, dark, print, offline
 ```
 
-**114 tests, split by cost.** 92 of them run in a few seconds and gate every push; the rest
+**117 tests, split by cost.** 94 of them run in a few seconds and gate every push; the rest
 re-derive every figure quoted above, replicate the gate policies, execute every example and check
-that the web data is current. The web interface adds **18 JavaScript tests** (engine and parity)
-and **6 browser tests**, in their own CI job.
+that the web data is current. The web interface adds **19 JavaScript tests** (engine and parity)
+and **8 browser tests**, in their own CI job.
 Statement coverage is reported by `make check` and is the one repository figure not under test.
 
 ## License

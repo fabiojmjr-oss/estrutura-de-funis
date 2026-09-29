@@ -26,17 +26,17 @@ function policyFromParams(base, params) {
   return {
     ...base,
     name: 'Seu cenário',
-    triage_share: param(params, 'triagem', base.triage_share * 100) / 100,
-    triage_score: param(params, 'score', base.triage_score),
-    interviews: param(params, 'entrevistas', base.interviews),
-    visitors: param(params, 'visitantes', base.visitors),
-    mvp_users: param(params, 'usuarios', base.mvp_users),
-    pain_bar: param(params, 'barra_dor', base.pain_bar * 100) / 100,
-    signup_bar: param(params, 'barra_conv', base.signup_bar * 100) / 100,
-    retention_bar: param(params, 'barra_ret', base.retention_bar * 100) / 100,
-    reading: param(params, 'leitura', base.reading),
-    go: param(params, 'go', base.go * 100) / 100,
-    kill: param(params, 'kill', base.kill * 100) / 100,
+    triage_share: param(params, 'triagem', base.triage_share * 100, { min: 10, max: 100 }) / 100,
+    triage_score: param(params, 'score', base.triage_score, { oneOf: ['rice', 'ice', 'none'] }),
+    interviews: param(params, 'entrevistas', base.interviews, { min: 0, max: 40 }),
+    visitors: param(params, 'visitantes', base.visitors, { min: 0, max: 3000 }),
+    mvp_users: param(params, 'usuarios', base.mvp_users, { min: 0, max: 200 }),
+    pain_bar: param(params, 'barra_dor', base.pain_bar * 100, { min: 5, max: 80 }) / 100,
+    signup_bar: param(params, 'barra_conv', base.signup_bar * 100, { min: 1, max: 15 }) / 100,
+    retention_bar: param(params, 'barra_ret', base.retention_bar * 100, { min: 10, max: 70 }) / 100,
+    reading: param(params, 'leitura', base.reading, { oneOf: ['posterior', 'point'] }),
+    go: param(params, 'go', base.go * 100, { min: 50, max: 99 }) / 100,
+    kill: param(params, 'kill', base.kill * 100, { min: 1, max: 49 }) / 100,
   };
 }
 
@@ -49,15 +49,15 @@ export function render(el, { data, params, setParams, setCsv }) {
   let policy = policyFromParams(base, params);
   let costs = {
     ...ideation.costs,
-    mvp_build: param(params, 'custo_mvp', ideation.costs.mvp_build),
-    scale_investment: param(params, 'invest_escala', ideation.costs.scale_investment),
+    mvp_build: param(params, 'custo_mvp', ideation.costs.mvp_build, { min: 0, max: 1e8 }),
+    scale_investment: param(params, 'invest_escala', ideation.costs.scale_investment, { min: 0, max: 1e9 }),
   };
-  let reps = param(params, 'reps', 30);
+  let reps = param(params, 'reps', 30, { min: 10, max: 60 });
   const calc = {
-    k: param(params, 'k', 2),
-    n: param(params, 'n', 5),
-    bar: param(params, 'barra', 35),
-    expected: param(params, 'esperada', 55),
+    k: param(params, 'k', 2, { min: 0, max: 1e6 }),
+    n: param(params, 'n', 5, { min: 1, max: 1e6 }),
+    bar: param(params, 'barra', 35, { min: 1, max: 90 }),
+    expected: param(params, 'esperada', 55, { min: 1, max: 95 }),
   };
 
   const pctFmt = (v) => `${v}%`;
@@ -95,7 +95,7 @@ export function render(el, { data, params, setParams, setCsv }) {
       <div class="panel controls" id="controls">${controls(policy)}</div>
       <div id="out"><div class="panel"><p class="spinner"> Simulando…</p></div></div>
     </div>
-    <div class="grid two" style="margin-top:1rem">
+    <div class="grid two spaced">
       <div class="panel controls" id="calc-controls">
         <h3>Calculadora de gate</h3>
         ${number('k', 'Responderam (confirmaram dor, converteram, ficaram)', calc.k, { min: 0 })}
@@ -186,7 +186,7 @@ export function render(el, { data, params, setParams, setCsv }) {
         ${kpi('Amostra para decidir', needed, { note: `se a taxa real for ${calc.expected}%` })}
       </div>
       ${densityChart(density, bar, { label: 'Distribuição a posteriori da taxa real' })}
-      <p class="muted" style="font-size:.8rem">Curva: o que a evidência diz sobre a taxa real (prior neutro: 50% de chance
+      <p class="muted note">Curva: o que a evidência diz sobre a taxa real (prior neutro: 50% de chance
       de passar a barra antes de qualquer dado). Área sombreada: probabilidade de passar a barra.</p>`;
   }
 

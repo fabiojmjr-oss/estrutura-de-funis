@@ -1,0 +1,18 @@
+# Keeps the workflow actions and the web tooling current. Monthly and grouped, so a small public
+# repository gets at most two update PRs a month rather than one per package.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      web-tooling:
+        patterns: ["*"]

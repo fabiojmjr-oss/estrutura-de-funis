@@ -28,6 +28,7 @@ from .gates import (
     GatePolicy,
     PolicyRun,
     compare_policies,
+    paired_difference,
     simulate_policy,
 )
 from .scoring import ice, precision_at, rice, score_table, score_validity, spearman, top_overlap
@@ -46,6 +47,7 @@ __all__ = [
     "decide",
     "ice",
     "neutral_prior",
+    "paired_difference",
     "precision_at",
     "prob_above",
     "rice",

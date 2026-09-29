@@ -38,8 +38,9 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/fabiojmjr-oss/estrutura-de-funis"
+Homepage = "https://fabiojmjr-oss.github.io/estrutura-de-funis/"
 Source = "https://github.com/fabiojmjr-oss/estrutura-de-funis"
+Documentation = "https://github.com/fabiojmjr-oss/estrutura-de-funis#readme"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/funilab"]

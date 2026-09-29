@@ -326,3 +326,41 @@ def compare_policies(
                 }
             )
     return pd.DataFrame(rows).set_index(["policy", "metric"])
+
+
+def paired_difference(
+    ideas: pd.DataFrame,
+    a: GatePolicy,
+    b: GatePolicy,
+    costs: CycleCosts | None = None,
+    *,
+    metric: str = "net_value",
+    replications: int = 60,
+    seed: int = 0,
+) -> dict[str, float]:
+    """``a`` minus ``b`` on one metric, both policies run on the same draws in each replication.
+
+    Comparing two policies' separate ranges answers the wrong question: the ranges can overlap even
+    when one policy beats the other in every single run, because most of each range is the luck
+    both share - which ideas happened to impress their interviewees. Running both on the same seed
+    (common random numbers) cancels that shared luck, so the spread of the *difference* is what is
+    left to decide on.
+
+    Returns:
+        ``mean``, ``low`` and ``high`` (2.5th and 97.5th percentiles of the per-replication
+        difference), ``share_positive`` (how often ``a`` came out ahead) and ``replications``.
+    """
+    differences = np.array(
+        [
+            simulate_policy(ideas, a, costs, seed=seed * 1_000 + r).summary[metric]
+            - simulate_policy(ideas, b, costs, seed=seed * 1_000 + r).summary[metric]
+            for r in range(replications)
+        ]
+    )
+    return {
+        "mean": float(differences.mean()),
+        "low": float(np.quantile(differences, 0.025)),
+        "high": float(np.quantile(differences, 0.975)),
+        "share_positive": float((differences > 0).mean()),
+        "replications": float(replications),
+    }

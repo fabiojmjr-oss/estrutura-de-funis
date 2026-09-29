@@ -116,3 +116,35 @@ test('after one visit the page works offline', async () => {
   assert.ok((await p.locator('#view svg.chart').count()) > 0);
   await context.close();
 });
+
+test('a crafted shared link cannot run code or inject markup', async () => {
+  // The page is public and every scenario travels as a URL, so the URL is untrusted input.
+  const { context, page: p, errors } = await page();
+  let dialogs = 0;
+  p.on('dialog', async (d) => { dialogs += 1; await d.dismiss(); });
+  const payloads = [
+    `builder?s=${encodeURIComponent('<img src=x onerror=alert(1)>~100;"><svg onload=alert(2)>~10')}`,
+    `ideation?politica=${encodeURIComponent('<img src=x onerror=alert(3)>')}`,
+    `multichannel?modelo=${encodeURIComponent('"><img src=x onerror=alert(4)>')}`,
+    `sales?odds=${encodeURIComponent('<script>alert(5)</script>')}&fator=1e309`,
+  ];
+  for (const hash of payloads) {
+    await openTab(p, hash);
+    await p.waitForTimeout(300);
+  }
+  assert.equal(dialogs, 0);
+  assert.equal(await p.locator('img[src="x"], svg[onload]').count(), 0);
+  assert.deepEqual(errors, [], 'no script error and no Content Security Policy violation');
+  await context.close();
+});
+
+test('the link preview points at an image that is served', async () => {
+  const { context, page: p } = await page();
+  await openTab(p, 'overview');
+  const image = await p.getAttribute('meta[property="og:image"]', 'content');
+  assert.match(image, /og-image\.png$/);
+  const response = await p.request.get(`${base}og-image.png`);
+  assert.equal(response.status(), 200);
+  assert.equal(response.headers()['content-type'], 'image/png');
+  await context.close();
+});

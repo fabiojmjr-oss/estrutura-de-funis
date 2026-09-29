@@ -244,6 +244,13 @@ constrói mais MVPs e ganha mais dinheiro** — sua pior rodada (26,9) fica acim
 intuição (25,6) — porque gasta em evidência barata para toda ideia em vez de num score, e define a
 barra de confiança pelo custo de cada erro, não por quão rigorosa ela soa.
 
+As faixas acima se sobrepõem entre calibrada e evidência, e essa sobreposição é, em boa parte, sorte
+que as duas políticas compartilham: quais ideias impressionaram seus entrevistados. `paired_difference`
+roda as duas nos mesmos sorteios e mede a diferença diretamente. **A calibrada vence a evidência em
+60 de 60 rodadas pareadas, por R$ 5,1 mi em média (faixa de 2,5–97,5%: +0,55 mi a +9,92 mi).** O
+mesmo teste *não* separa evidência de intuição: a faixa cruza o zero e a evidência sai na frente em
+85% das rodadas, então o README não afirma que o upgrade de manual vence o feeling neste portfólio.
+
 A política calibrada foi escolhida por busca em grade no portfólio da semente 42. Todos os números
 acima vêm de um **portfólio independente (semente 2026)**, para que a busca não avalie a si mesma.
 
@@ -338,6 +345,9 @@ contra o que aconteceu, não umas contra as outras.
 **Nunca reportar uma estimativa pontual estocástica como resposta.** Políticas de gate são
 replicadas e carregam uma faixa; uma diferença dentro da faixa não é reportada como vitória.
 
+**Comparar políticas nos mesmos sorteios.** Duas faixas que se sobrepõem não significam políticas
+indistinguíveis; quem decide é a diferença pareada.
+
 **Ajustar numa amostra, reportar em outra.** A política calibrada foi escolhida num portfólio e
 todo número publicado vem de um segundo.
 
@@ -383,13 +393,13 @@ make check-all   # o acima mais todo número documentado re-derivado
 make claims      # re-deriva todo número citado num README
 make js-install  # ferramentas da web (ESLint, Playwright)
 make js-check    # lint JavaScript, testes do motor e de paridade
-make e2e         # a página no Chromium: desktop, celular, link, tema escuro, impressão, offline
+make e2e         # a página no Chromium: desktop, celular, link, injeção, prévia, tema escuro, impressão, offline
 ```
 
-**114 testes, divididos por custo.** 92 deles rodam em poucos segundos e liberam cada push; o
+**117 testes, divididos por custo.** 94 deles rodam em poucos segundos e liberam cada push; o
 restante re-deriva todo número citado acima, replica as políticas de gate, executa todos os
-exemplos e confere se os dados da web estão atualizados. A interface web soma **18 testes
-JavaScript** (motor e paridade) e **6 testes de navegador**, num job de CI próprio. A cobertura de linhas é reportada pelo `make check` e é o único número sobre o
+exemplos e confere se os dados da web estão atualizados. A interface web soma **19 testes
+JavaScript** (motor e paridade) e **8 testes de navegador**, num job de CI próprio. A cobertura de linhas é reportada pelo `make check` e é o único número sobre o
 repositório que não está sob teste.
 
 ## Licença

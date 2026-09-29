@@ -12,8 +12,8 @@ export function render(el, { data, params, setParams, setCsv }) {
   const { marketing } = data;
   const channels = Object.keys(marketing.spend);
   const state = {
-    model: param(params, 'modelo', 'last'),
-    mult: channels.map((_, i) => param(params, `v${i}`, 100)),
+    model: param(params, 'modelo', 'last', { oneOf: MODELS }),
+    mult: channels.map((_, i) => param(params, `v${i}`, 100, { min: 25, max: 200 })),
   };
 
   const q = (label) => Object.fromEntries(marketing.conventions[label].map((r) => [r.convention, r]));
@@ -30,7 +30,7 @@ export function render(el, { data, params, setParams, setCsv }) {
         <fieldset class="control-group"><legend>Verba por canal (% da real)</legend>
           ${channels.map((c, i) => range(`v${i}`, c, state.mult[i], { min: 25, max: 200, step: 5, format: (v) => `${v}%` })).join('')}
         </fieldset>
-        <p class="muted" style="font-size:.8rem">Os clientes ficam fixos: o painel mostra a sensibilidade do
+        <p class="muted note">Os clientes ficam fixos: o painel mostra a sensibilidade do
         CAC à verba, não a resposta da demanda a ela.</p>
       </div>
       <div id="out"></div>

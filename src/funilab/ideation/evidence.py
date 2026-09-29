@@ -16,6 +16,14 @@ the bar, which is what "we do not know yet" means. The uniform prior that textbo
 is not neutral here: against a 4% sign-up bar it starts at 96% confidence that the idea clears
 it, and two visitors who both leave are enough to "pass" at 80%. That defect was found by this
 module's own example, and it is why the default is what it is.
+
+References for the numerical methods, each implemented here independently from its published
+description rather than copied from any codebase:
+
+* Continued fraction for the incomplete beta function, evaluated with the modified Lentz
+  algorithm - Lentz, W. J. (1976), *Applied Optics* 15(3); Thompson, I. J. and Barnett, A. R.
+  (1986), *Journal of Computational Physics* 64(2); described in Press, W. H. et al.,
+  *Numerical Recipes*, 3rd ed. (2007), sections 5.2 and 6.4.
 """
 
 from __future__ import annotations

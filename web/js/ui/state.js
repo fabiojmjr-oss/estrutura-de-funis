@@ -22,14 +22,21 @@ export function writeHash(tab, params) {
   return window.location.href;
 }
 
-/** Typed read of one parameter with a default. */
-export function param(params, key, fallback) {
-  if (!(key in params)) return fallback;
+/**
+ * Typed, validated read of one parameter.
+ *
+ * A shared link is input from anyone, so a value outside what the control can produce falls back
+ * to the default rather than reaching the engine: ``oneOf`` for choices, ``min``/``max`` for
+ * numbers (clamped). A malformed link then opens a sensible scenario instead of a broken tab.
+ */
+export function param(params, key, fallback, { oneOf = null, min = -Infinity, max = Infinity } = {}) {
+  if (!Object.hasOwn(params, key)) return fallback;
   const value = params[key];
   if (typeof fallback === 'number') {
     const n = Number(value);
-    return Number.isFinite(n) ? n : fallback;
+    return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;
   }
   if (typeof fallback === 'boolean') return value === '1' || value === 'true';
+  if (oneOf && !oneOf.includes(value)) return fallback;
   return value;
 }
